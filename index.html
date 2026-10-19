@@ -1,0 +1,901 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#102c3b">
+<title>LAB HATI | Laboratorium Maya PAI</title>
+
+<style>
+:root {
+  --bg: #f1f6f5;
+  --ink: #17323c;
+  --muted: #60757b;
+  --primary: #176b63;
+  --primary-dark: #104b48;
+  --gold: #f1c66d;
+  --card: #ffffff;
+  --line: #dce8e5;
+  --soft: #e6f4ef;
+  --danger: #a44444;
+  --radius: 20px;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  color: var(--ink);
+  background: var(--bg);
+  line-height: 1.6;
+}
+button, input, select, textarea { font: inherit; }
+button { cursor: pointer; touch-action: manipulation; }
+button:focus-visible, input:focus-visible, select:focus-visible,
+textarea:focus-visible {
+  outline: 3px solid #e5b84f;
+  outline-offset: 3px;
+}
+.hidden { display: none !important; }
+.wrap { width: min(1120px, 100%); margin: auto; padding: 18px; }
+.hero {
+  background: linear-gradient(135deg, #102c3b, #176b63);
+  color: white;
+  padding: 30px 20px;
+  border-radius: 0 0 28px 28px;
+}
+.hero-inner { width: min(1120px, 100%); margin: auto; }
+.brand { font-size: .82rem; letter-spacing: .13em; font-weight: 800; color: #f4d68e; }
+.hero h1 { font-size: clamp(2rem, 6vw, 3.6rem); line-height: 1.08; margin: 12px 0; }
+.hero p { max-width: 680px; color: #e1efec; }
+.pill {
+  display: inline-block; border: 1px solid #8cb8ae; border-radius: 99px;
+  padding: 5px 12px; font-size: .8rem; margin: 3px 5px 3px 0;
+}
+.card {
+  background: var(--card); border: 1px solid var(--line);
+  border-radius: var(--radius); padding: 20px; margin-bottom: 16px;
+  box-shadow: 0 5px 20px rgba(18, 55, 61, .04);
+}
+h2 { font-size: clamp(1.35rem, 4vw, 1.9rem); line-height: 1.2; }
+h3 { line-height: 1.3; }
+.muted { color: var(--muted); }
+.small { font-size: .88rem; }
+.grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.field { display: grid; gap: 6px; margin: 14px 0; }
+.field label { font-weight: 700; }
+input, select, textarea {
+  width: 100%; min-width: 0; border: 1px solid #b9ceca; border-radius: 12px;
+  padding: 12px 13px; background: white; color: var(--ink);
+}
+textarea { resize: vertical; min-height: 120px; }
+.btn {
+  border: 0; border-radius: 12px; padding: 12px 17px; min-height: 46px;
+  background: var(--primary); color: white; font-weight: 750;
+}
+.btn:hover { background: var(--primary-dark); }
+.btn.secondary { background: #e6f2ef; color: var(--primary-dark); border: 1px solid #c4dfd7; }
+.btn.gold { background: var(--gold); color: #293b3a; }
+.btn.light { background: white; color: var(--primary-dark); }
+.btn:disabled { opacity: .45; cursor: not-allowed; }
+.actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 16px; }
+.notice {
+  padding: 13px 15px; border-left: 4px solid var(--gold);
+  background: #fff8e7; border-radius: 8px; margin: 14px 0;
+}
+.tabs {
+  display: flex; gap: 8px; overflow-x: auto; padding: 10px 2px 14px;
+  scrollbar-width: thin; position: sticky; top: 0; z-index: 10;
+  background: rgba(241,246,245,.97);
+}
+.tab {
+  flex: 0 0 auto; min-height: 44px; border: 1px solid var(--line);
+  border-radius: 12px; padding: 9px 14px; background: white; color: var(--ink);
+  font-weight: 700;
+}
+.tab.active { background: var(--primary); color: white; border-color: var(--primary); }
+.progress-track { height: 10px; background: #dce9e5; border-radius: 99px; overflow: hidden; }
+.progress-bar { height: 100%; width: 0; background: var(--primary); transition: width .25s; }
+.station { display: none; }
+.station.active { display: block; }
+.verse {
+  background: #f5faf7; border: 1px solid #d9eae1;
+  padding: 16px; border-radius: 15px; margin: 14px 0;
+}
+.arabic {
+  font-family: "Traditional Arabic", "Noto Naskh Arabic", serif;
+  font-size: clamp(1.45rem, 5vw, 2rem); line-height: 2;
+  direction: rtl; text-align: right; color: #184e45;
+}
+.ref { color: var(--primary); font-weight: 800; }
+.choice {
+  display: block; width: 100%; text-align: left; margin: 9px 0;
+  padding: 13px; border: 1px solid var(--line); border-radius: 12px;
+  background: white; color: var(--ink); min-height: 48px;
+}
+.choice:hover { border-color: var(--primary); background: #f4fbf8; }
+.choice.selected { border: 2px solid var(--primary); background: var(--soft); }
+.feedback { padding: 14px; border-radius: 12px; margin-top: 12px; background: var(--soft); }
+.slider-row { margin: 20px 0; }
+.slider-row label { display: flex; justify-content: space-between; gap: 12px; font-weight: 700; }
+input[type="range"] { padding: 0; accent-color: var(--primary); margin-top: 8px; }
+.mission {
+  display: flex; gap: 12px; align-items: flex-start;
+  padding: 12px 0; border-bottom: 1px solid var(--line);
+}
+.mission input { width: 22px; height: 22px; flex: 0 0 auto; margin-top: 3px; accent-color: var(--primary); }
+.result-box { background: #e7f5ee; border-radius: 15px; padding: 18px; }
+footer { text-align: center; color: var(--muted); padding: 25px 10px 40px; font-size: .85rem; }
+@media (max-width: 650px) {
+  .wrap { padding: 12px; }
+  .hero { padding: 25px 16px; border-radius: 0 0 20px 20px; }
+  .grid { grid-template-columns: 1fr; gap: 0; }
+  .card { padding: 16px; border-radius: 16px; }
+  .actions { display: grid; grid-template-columns: 1fr; }
+  .actions .btn { width: 100%; }
+  .tabs { margin: 0 -2px; }
+}
+@media print {
+  body { background: white; }
+  .hero, .tabs, .actions, #startScreen, footer, .no-print { display: none !important; }
+  .wrap { width: 100%; padding: 0; }
+  .card { box-shadow: none; break-inside: avoid; }
+  .station { display: block !important; }
+}
+</style>
+</head>
+
+<body>
+
+<header class="hero">
+  <div class="hero-inner">
+    <div class="brand">LABORATORIUM MAYA PEMBELAJARAN PAI</div>
+    <h1>LAB HATI 💚</h1>
+    <p>Kenali tanda-tanda hati yang perlu dirawat, belajar menerima nasihat, dan berlatih menumbuhkan kepedulian dalam kehidupan sehari-hari.</p>
+    <span class="pill">PAI • Refleksi Diri</span>
+    <span class="pill">Ramah HP & Tablet</span>
+    <span class="pill">Bisa digunakan offline</span>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <!-- HALAMAN AWAL -->
+  <section id="startScreen" class="card">
+    <h2>Selamat datang di Laboratorium Hati!</h2>
+    <p class="muted">Isi identitas terlebih dahulu, lalu jelajahi enam stasiun pembelajaran. Siapkan diri untuk belajar, berpikir, dan memperbaiki kebiasaan.</p>
+
+    <form id="identityForm">
+      <div class="field">
+        <label for="studentName">Nama peserta didik</label>
+        <input id="studentName" name="studentName" type="text" maxlength="80"
+          placeholder="Masukkan nama lengkap" autocomplete="name" required>
+      </div>
+      <div class="field">
+        <label for="studentClass">Kelas</label>
+        <input id="studentClass" name="studentClass" type="text" maxlength="40"
+          placeholder="Contoh: XII-2" required>
+      </div>
+      <div class="notice">
+        <strong>Catatan penting:</strong> permainan ini bukan alat untuk mengukur iman atau menentukan seseorang berhati keras. Gunakan aktivitasnya sebagai sarana belajar dan refleksi diri.
+      </div>
+      <button class="btn" type="submit">Masuk Laboratorium →</button>
+    </form>
+  </section>
+
+  <!-- APLIKASI -->
+  <section id="appScreen" class="hidden">
+    <div class="card">
+      <div class="grid">
+        <div>
+          <div class="small muted">PESERTA DIDIK</div>
+          <strong id="displayName">—</strong>
+        </div>
+        <div>
+          <div class="small muted">KELAS</div>
+          <strong id="displayClass">—</strong>
+        </div>
+      </div>
+      <div style="margin-top:18px">
+        <div style="display:flex;justify-content:space-between;gap:10px;margin-bottom:7px">
+          <strong>Progres kegiatan</strong>
+          <span id="progressText">0 dari 6 stasiun</span>
+        </div>
+        <div class="progress-track"><div id="progressBar" class="progress-bar"></div></div>
+      </div>
+    </div>
+
+    <nav class="tabs no-print" aria-label="Navigasi stasiun">
+      <button class="tab active" data-station="0">1. Pahami</button>
+      <button class="tab" data-station="1">2. Amati</button>
+      <button class="tab" data-station="2">3. Selidiki</button>
+      <button class="tab" data-station="3">4. Praktikkan</button>
+      <button class="tab" data-station="4">5. Rawat</button>
+      <button class="tab" data-station="5">6. Evaluasi</button>
+    </nav>
+
+    <!-- STASIUN 1 -->
+    <section class="station active" data-panel="0">
+      <div class="card">
+        <h2>Stasiun 1 — Pahami Konsep</h2>
+        <p>Dalam pembelajaran PAI, hati dibahas sebagai pusat kesadaran batin, niat, dan sikap manusia. Istilah berikut digunakan dalam pembahasan keislaman untuk membantu memahami keadaan hati.</p>
+        <div class="grid">
+          <div class="card">
+            <h3>💚 Qalbun Salim</h3>
+            <p>Hati yang selamat, berusaha tulus, menerima kebenaran, dan menjauhi sifat tercela.</p>
+          </div>
+          <div class="card">
+            <h3>🪨 Qalbun Mayyit</h3>
+            <p>Istilah yang digunakan dalam sebagian literatur untuk menggambarkan hati yang mati secara rohani, jauh dari petunjuk dan kepekaan terhadap kebenaran.</p>
+          </div>
+          <div class="card">
+            <h3>🌱 Qalbun Maridh</h3>
+            <p>Hati yang memiliki penyakit rohani, misalnya kecenderungan pada kebohongan, iri, atau niat yang tidak baik, dan perlu diperbaiki.</p>
+          </div>
+          <div class="card">
+            <h3>🤲 Hati yang dirawat</h3>
+            <p>Belajar bertobat, menerima nasihat, berzikir, berdoa, berbuat baik, dan memperbaiki hubungan dengan sesama.</p>
+          </div>
+        </div>
+        <div class="notice">
+          Kategori ini merupakan bahan belajar, bukan label untuk menghakimi teman atau menentukan kondisi batin seseorang.
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Dalil Al-Qur'an tentang Hati</h2>
+        <p class="muted">Baca ayat, pahami konteksnya, lalu renungkan pesan yang relevan bagi diri sendiri.</p>
+
+        <article class="verse">
+          <div class="ref">1. Q.S. Al-Baqarah [2]: 10</div>
+          <div class="arabic" lang="ar">فِيْ قُلُوْبِهِمْ مَّرَضٌ فَزَادَهُمُ اللّٰهُ مَرَضًا ۚ وَلَهُمْ عَذَابٌ اَلِيْمٌ ۢ بِمَا كَانُوْا يَكْذِبُوْنَ</div>
+          <p><strong>Makna ringkas:</strong> Ayat ini menyebut penyakit dalam hati dalam konteks orang-orang munafik yang dibicarakan pada bagian tersebut.</p>
+          <p><strong>Renungan:</strong> Periksa kejujuran dan niat diri sendiri, bukan menuduh orang lain.</p>
+          <a href="https://quran.com/id/sapi-betina/10-250" target="_blank" rel="noopener">Baca ayat dan terjemahan</a>
+        </article>
+
+        <article class="verse">
+          <div class="ref">2. Q.S. Al-Baqarah [2]: 74</div>
+          <div class="arabic" lang="ar">ثُمَّ قَسَتْ قُلُوْبُكُمْ مِّنْۢ بَعْدِ ذٰلِكَ فَهِيَ كَالْحِجَارَةِ اَوْ اَشَدُّ قَسْوَةً ۗ</div>
+          <p><strong>Makna ringkas:</strong> Ayat ini menggambarkan hati yang menjadi keras seperti batu atau bahkan lebih keras. Ayat lengkapnya juga menyebut batu yang memancarkan air, terbelah sehingga air keluar, dan yang jatuh karena takut kepada Allah.</p>
+          <p><strong>Renungan:</strong> Jangan membiasakan diri mengabaikan kebenaran dan nasihat yang baik.</p>
+          <a href="https://quran.com/id/sapi-betina/74/translations/quran.id" target="_blank" rel="noopener">Baca ayat dan terjemahan</a>
+        </article>
+
+        <article class="verse">
+          <div class="ref">3. Q.S. Al-Anfal [8]: 2</div>
+          <div class="arabic" lang="ar">اِنَّمَا الْمُؤْمِنُوْنَ الَّذِيْنَ اِذَا ذُكِرَ اللّٰهُ وَجِلَتْ قُلُوْبُهُمْ وَاِذَا تُلِيَتْ عَلَيْهِمْ اٰيٰتُهٗ زَادَتْهُمْ اِيْمَانًا وَّعَلٰى رَبِّهِمْ يَتَوَكَّلُوْنَ</div>
+          <p><strong>Makna ringkas:</strong> Ayat ini menggambarkan orang-orang beriman yang hatinya tersentuh ketika nama Allah disebut, imannya bertambah ketika ayat-ayat-Nya dibacakan, dan bertawakal kepada-Nya.</p>
+          <p><strong>Renungan:</strong> Latih diri untuk menyimak ayat Al-Qur'an dan mengambil pelajaran darinya.</p>
+          <a href="https://quran.com/id/rampasan-perang/2-50" target="_blank" rel="noopener">Baca ayat dan terjemahan</a>
+        </article>
+
+        <article class="verse">
+          <div class="ref">4. Q.S. At-Taubah [9]: 126</div>
+          <div class="arabic" lang="ar">اَوَلَا يَرَوْنَ اَنَّهُمْ يُفْتَنُوْنَ فِيْ كُلِّ عَامٍ مَّرَّةً اَوْ مَرَّتَيْنِ ثُمَّ لَا يَتُوْبُوْنَ وَلَا هُمْ يَذَّكَّرُوْنَ</div>
+          <p><strong>Makna ringkas:</strong> Ayat ini mengingatkan tentang ujian yang datang berulang kali, tetapi orang-orang yang dibicarakan dalam konteks ayat tidak bertobat dan tidak mengambil pelajaran.</p>
+          <p><strong>Renungan:</strong> Ketika melakukan kesalahan, belajarlah mengakuinya, memperbaikinya, dan tidak mengulanginya.</p>
+          <a href="https://quran.com/id/at-taubah/126" target="_blank" rel="noopener">Baca ayat dan terjemahan</a>
+        </article>
+
+        <article class="verse">
+          <div class="ref">5. Q.S. Ali 'Imran [3]: 151</div>
+          <div class="arabic" lang="ar">سَنُلْقِيْ فِيْ قُلُوْبِ الَّذِيْنَ كَفَرُوا الرُّعْبَ بِمَآ اَشْرَكُوْا بِاللّٰهِ مَا لَمْ يُنَزِّلْ بِهٖ سُلْطٰنًا</div>
+          <p><strong>Makna ringkas:</strong> Ayat ini berbicara tentang rasa takut yang Allah masukkan ke dalam hati orang-orang yang mengingkari dan mempersekutukan-Nya, dalam konteks ayat tersebut.</p>
+          <p><strong>Catatan konteks:</strong> Ayat ini bukan definisi langsung tentang keras hati. Pelajari bersama ayat sebelum dan sesudahnya agar maknanya tidak dilepaskan dari konteks.</p>
+          <a href="https://quran.com/id/keluarga-imran/151" target="_blank" rel="noopener">Baca ayat dan terjemahan</a>
+        </article>
+
+        <div class="notice">
+          Teks Arab ditampilkan sebagai bantuan belajar. Untuk membaca, menghafal, atau mengutip secara resmi, cocokkan kembali dengan mushaf dan terjemahan resmi Kementerian Agama RI.
+        </div>
+        <button class="btn mark-done" data-done="0">Tandai Stasiun Pahami Selesai ✓</button>
+      </div>
+    </section>
+
+    <!-- STASIUN 2 -->
+    <section class="station" data-panel="1">
+      <div class="card">
+        <h2>Stasiun 2 — Amati Respons</h2>
+        <p>Bayangkan situasi berikut. Pilih respons yang menurutmu paling bijak. Ini latihan mengambil keputusan, bukan tes keimanan.</p>
+        <div id="detectorArea"></div>
+        <div class="actions">
+          <button class="btn secondary" id="prevSituation">← Sebelumnya</button>
+          <button class="btn" id="nextSituation">Situasi berikutnya →</button>
+        </div>
+        <div id="detectorFeedback" class="feedback hidden" aria-live="polite"></div>
+        <button class="btn mark-done" data-done="1">Tandai Stasiun Amati Selesai ✓</button>
+      </div>
+    </section>
+
+    <!-- STASIUN 3 -->
+    <section class="station" data-panel="2">
+      <div class="card">
+        <h2>Stasiun 3 — Selidiki Kebiasaan</h2>
+        <p>Kenali kebiasaan yang bisa membantu kita lebih tenang, peduli, dan terbuka terhadap nasihat. Geser setiap indikator sesuai kebiasaan yang ingin kamu latih.</p>
+        <div class="notice">Nilai di bawah hanya menunjukkan pilihan latihan pribadi. Nilai ini tidak mengukur iman, kualitas hati, atau kedudukan seseorang di hadapan Allah.</div>
+
+        <div class="slider-row">
+          <label for="sAdvice">Mau mendengarkan nasihat <span id="vAdvice">3/5</span></label>
+          <input id="sAdvice" type="range" min="1" max="5" value="3">
+        </div>
+        <div class="slider-row">
+          <label for="sPause">Berhenti sejenak sebelum merespons <span id="vPause">3/5</span></label>
+          <input id="sPause" type="range" min="1" max="5" value="3">
+        </div>
+        <div class="slider-row">
+          <label for="sCare">Peduli pada perasaan orang lain <span id="vCare">3/5</span></label>
+          <input id="sCare" type="range" min="1" max="5" value="3">
+        </div>
+        <div class="slider-row">
+          <label for="sReflect">Meluangkan waktu untuk ibadah dan refleksi <span id="vReflect">3/5</span></label>
+          <input id="sReflect" type="range" min="1" max="5" value="3">
+        </div>
+        <button class="btn" id="reviewHabits">Lihat Saran Latihan</button>
+        <div id="habitFeedback" class="feedback hidden" aria-live="polite"></div>
+        <button class="btn mark-done" data-done="2">Tandai Stasiun Selidiki Selesai ✓</button>
+      </div>
+    </section>
+
+    <!-- STASIUN 4 -->
+    <section class="station" data-panel="3">
+      <div class="card">
+        <h2>Stasiun 4 — Praktikkan Sikap Bijak</h2>
+        <p><strong>Skenario:</strong> Di grup kelas, seorang teman dijadikan bahan ejekan. Beberapa orang ikut tertawa. Kamu melihat percakapan tersebut.</p>
+        <div id="scenarioChoices">
+          <button class="choice" data-scenario="0">A. Ikut mengejek agar dianggap seru oleh teman-teman.</button>
+          <button class="choice" data-scenario="1">B. Tidak ikut menyebarkan, mengingatkan dengan sopan, dan mendukung teman yang diejek.</button>
+          <button class="choice" data-scenario="2">C. Membalas dengan hinaan yang lebih keras.</button>
+          <button class="choice" data-scenario="3">D. Jika situasinya berlanjut, simpan bukti seperlunya dan minta bantuan guru atau orang dewasa tepercaya.</button>
+        </div>
+        <div id="scenarioFeedback" class="feedback hidden" aria-live="polite"></div>
+        <button class="btn mark-done" data-done="3">Tandai Stasiun Praktikkan Selesai ✓</button>
+      </div>
+    </section>
+
+    <!-- STASIUN 5 -->
+    <section class="station" data-panel="4">
+      <div class="card">
+        <h2>Stasiun 5 — Rawat Kebiasaan Baik</h2>
+        <p>Pilih kebiasaan yang ingin kamu latih. Tidak harus langsung semuanya. Perubahan baik bisa dimulai dari satu langkah kecil dan dilakukan dengan konsisten.</p>
+        <div id="missionList">
+          <label class="mission"><input type="checkbox" value="Mau menerima nasihat yang baik"><span><strong>Terbuka terhadap nasihat</strong><br><span class="muted">Mendengar dahulu sebelum membantah.</span></span></label>
+          <label class="mission"><input type="checkbox" value="Memperbaiki hubungan"><span><strong>Memperbaiki hubungan</strong><br><span class="muted">Meminta maaf dan berdamai ketika melakukan kesalahan.</span></span></label>
+          <label class="mission"><input type="checkbox" value="Membaca dan memahami Al-Quran"><span><strong>Membaca dan memahami Al-Qur'an</strong><br><span class="muted">Menyisihkan waktu untuk membaca dan merenungkan maknanya.</span></span></label>
+          <label class="mission"><input type="checkbox" value="Zikir doa dan refleksi"><span><strong>Zikir, doa, dan refleksi</strong><br><span class="muted">Mengingat Allah dan mengevaluasi sikap diri.</span></span></label>
+          <label class="mission"><input type="checkbox" value="Menolong sesama"><span><strong>Menolong sesama</strong><br><span class="muted">Melakukan kebaikan tanpa merendahkan orang lain.</span></span></label>
+          <label class="mission"><input type="checkbox" value="Memilih pergaulan yang baik"><span><strong>Memilih pergaulan yang baik</strong><br><span class="muted">Berteman dengan orang yang saling mendukung untuk berbuat baik.</span></span></label>
+        </div>
+        <p><strong id="missionCount">0 kebiasaan dipilih</strong></p>
+        <button class="btn mark-done" data-done="4">Tandai Stasiun Rawat Selesai ✓</button>
+      </div>
+    </section>
+
+    <!-- STASIUN 6 -->
+    <section class="station" data-panel="5">
+      <div class="card">
+        <h2>Stasiun 6 — Evaluasi dan Refleksi</h2>
+        <p>Jawab pertanyaan berikut untuk memeriksa pemahamanmu tentang materi.</p>
+        <div id="quizArea"></div>
+        <button class="btn" id="submitQuiz">Periksa Jawaban</button>
+        <div id="quizResult" class="feedback hidden" aria-live="polite"></div>
+
+        <hr style="border:0;border-top:1px solid var(--line);margin:25px 0">
+        <h3>Refleksi Pribadi</h3>
+        <p class="muted">Tuliskan satu hal yang kamu pelajari dan satu kebiasaan baik yang ingin kamu latih. Refleksi ini untuk pembelajaranmu sendiri.</p>
+        <div class="field">
+          <label for="reflection">Catatan refleksi</label>
+          <textarea id="reflection" maxlength="3000" placeholder="Hari ini saya belajar bahwa... Kebiasaan yang ingin saya latih adalah..."></textarea>
+        </div>
+        <div class="actions">
+          <button class="btn secondary" id="saveReflection">Simpan Refleksi di Perangkat</button>
+          <button class="btn" id="downloadReport">Unduh Ringkasan (.txt)</button>
+          <button class="btn gold" id="printReport">Cetak / Simpan PDF</button>
+        </div>
+        <p id="saveMessage" class="small muted" aria-live="polite"></p>
+        <div class="notice">
+          Simpan refleksi hanya di perangkat yang kamu gunakan. Jika menggunakan perangkat bersama, jangan tinggalkan data pribadi setelah selesai.
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Pohon Hati 🌳</h2>
+        <p>Visual ini menunjukkan progres menyelesaikan stasiun, bukan ukuran iman atau keadaan hati.</p>
+        <div class="result-box">
+          <div id="treeVisual" style="font-size:3rem;text-align:center">🌱</div>
+          <h3 id="treeTitle" style="text-align:center">Benih Pembelajaran</h3>
+          <p id="treeDescription" style="text-align:center">Mulailah dari satu langkah baik.</p>
+        </div>
+        <p class="small muted">Selesaikan stasiun yang tersedia untuk melihat progres belajarmu.</p>
+      </div>
+    </section>
+
+    <div class="actions no-print">
+      <button class="btn secondary" id="backToIdentity">Kembali ke Identitas</button>
+      <button class="btn secondary" id="resetApp">Mulai Ulang</button>
+    </div>
+  </section>
+</main>
+
+<footer>
+  LAB HATI • Media pembelajaran PAI • Gunakan dengan bijak, jaga privasi, dan hormati sesama.
+</footer>
+
+<script>
+(function () {
+  "use strict";
+
+  const $ = (selector, root = document) => root.querySelector(selector);
+  const $$ = (selector, root = document) => Array.from(root.querySelectorAll(selector));
+
+  let student = { name: "", className: "" };
+  let currentStation = 0;
+  const completed = new Set();
+  let quizScore = null;
+  let quizAnswers = {};
+  let scenarioChoice = null;
+  let situationIndex = 0;
+  let situationAnswers = {};
+  let quizSubmitted = false;
+
+  const situations = [
+    {
+      title: "Situasi 1 — Teman mendapat pujian",
+      prompt: "Temanmu dipuji guru karena hasil tugasnya bagus. Apa respons yang paling baik?",
+      choices: [
+        "Ikut memberi selamat dan menjadikannya motivasi.",
+        "Mengecilkan hasil kerjanya agar diriku terlihat lebih hebat.",
+        "Menyebarkan komentar buruk tentang dirinya."
+      ],
+      correct: 0,
+      feedback: "Menghargai keberhasilan orang lain melatih sikap rendah hati dan mengurangi kebiasaan iri."
+    },
+    {
+      title: "Situasi 2 — Mendapat koreksi",
+      prompt: "Guru menunjukkan bagian tugasmu yang perlu diperbaiki. Apa yang kamu lakukan?",
+      choices: [
+        "Langsung menolak semua masukan.",
+        "Mendengarkan, bertanya jika belum paham, lalu memperbaiki tugas.",
+        "Menyalahkan teman tanpa memeriksa kesalahan."
+      ],
+      correct: 1,
+      feedback: "Menerima masukan dengan tenang membantu kita belajar dan bertumbuh."
+    },
+    {
+      title: "Situasi 3 — Ejekan di grup kelas",
+      prompt: "Ada teman yang diejek di grup kelas. Bagaimana kamu merespons?",
+      choices: [
+        "Ikut menyebarkan ejekan.",
+        "Membalas dengan hinaan yang lebih kasar.",
+        "Tidak ikut mengejek, mengingatkan dengan sopan, dan mencari bantuan jika diperlukan."
+      ],
+      correct: 2,
+      feedback: "Menjaga ucapan, tidak ikut menyakiti, dan mencari bantuan merupakan respons yang bertanggung jawab."
+    },
+    {
+      title: "Situasi 4 — Saat ujian",
+      prompt: "Kamu melihat kesempatan untuk menyalin jawaban saat ujian. Apa yang kamu pilih?",
+      choices: [
+        "Menyalin karena teman lain juga melakukannya.",
+        "Mengerjakan semampunya dengan jujur dan meminta bantuan belajar setelah ujian.",
+        "Membantu menyebarkan jawaban ujian."
+      ],
+      correct: 1,
+      feedback: "Kejujuran tetap penting meskipun hasilnya belum sempurna. Kesalahan dapat menjadi bahan belajar."
+    }
+  ];
+
+  const quiz = [
+    {
+      q: "1. Apa pesan penting dari Q.S. Al-Baqarah [2]: 74?",
+      choices: [
+        "Kita tidak perlu menerima nasihat.",
+        "Hati dapat menjadi keras sehingga manusia perlu merenungkan peringatan Allah.",
+        "Kita boleh menilai keadaan hati semua orang."
+      ],
+      correct: 1,
+      explain: "Ayat ini menggambarkan hati yang keras dan mengajak pembaca memperhatikan peringatan Allah."
+    },
+    {
+      q: "2. Ketika menyadari telah melakukan kesalahan, sikap yang baik adalah ...",
+      choices: [
+        "Mencari alasan agar tidak perlu berubah.",
+        "Menyalahkan orang lain.",
+        "Mengakui kesalahan, bertobat, dan berusaha memperbaikinya."
+      ],
+      correct: 2,
+      explain: "Q.S. At-Taubah [9]: 126 mengingatkan tentang orang-orang yang tidak bertobat dan tidak mengambil pelajaran dalam konteks ayat tersebut."
+    },
+    {
+      q: "3. Apa tujuan utama simulasi LAB HATI?",
+      choices: [
+        "Menentukan siapa yang imannya paling tinggi.",
+        "Membantu peserta belajar, berefleksi, dan membangun kebiasaan baik.",
+        "Memberi label buruk kepada teman."
+      ],
+      correct: 1,
+      explain: "Simulasi ini adalah media pembelajaran dan refleksi, bukan alat untuk mengukur iman atau menghakimi orang."
+    }
+  ];
+
+  // Memulai aplikasi dengan identitas peserta
+  $("#identityForm").addEventListener("submit", function (event) {
+    event.preventDefault();
+    const name = $("#studentName").value.trim();
+    const className = $("#studentClass").value.trim();
+
+    if (!name || !className) {
+      alert("Silakan isi nama dan kelas terlebih dahulu.");
+      return;
+    }
+
+    student = { name, className };
+    $("#displayName").textContent = student.name;
+    $("#displayClass").textContent = student.className;
+    $("#startScreen").classList.add("hidden");
+    $("#appScreen").classList.remove("hidden");
+    showStation(0);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+    loadReflection();
+  });
+
+  // Navigasi stasiun
+  function showStation(index) {
+    currentStation = index;
+    $$(".station").forEach((panel, i) => {
+      panel.classList.toggle("active", i === index);
+    });
+    $$(".tab").forEach((tab, i) => {
+      tab.classList.toggle("active", i === index);
+      tab.setAttribute("aria-current", i === index ? "step" : "false");
+    });
+    updateProgress();
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
+  $$(".tab").forEach(tab => {
+    tab.addEventListener("click", () => showStation(Number(tab.dataset.station)));
+  });
+
+  $$(".mark-done").forEach(button => {
+    button.addEventListener("click", () => {
+      completed.add(Number(button.dataset.done));
+      updateProgress();
+      button.textContent = "Stasiun Selesai ✓";
+      button.disabled = true;
+    });
+  });
+
+  function updateProgress() {
+    const count = completed.size;
+    $("#progressText").textContent = count + " dari 6 stasiun";
+    $("#progressBar").style.width = (count / 6 * 100) + "%";
+
+    if (count <= 1) {
+      $("#treeVisual").textContent = "🌱";
+      $("#treeTitle").textContent = "Benih Pembelajaran";
+      $("#treeDescription").textContent = "Setiap pemahaman baru adalah awal dari kebiasaan baik.";
+    } else if (count <= 3) {
+      $("#treeVisual").textContent = "🌿";
+      $("#treeTitle").textContent = "Tunas Bertumbuh";
+      $("#treeDescription").textContent = "Kamu sedang melangkah melalui beberapa kegiatan pembelajaran.";
+    } else if (count <= 5) {
+      $("#treeVisual").textContent = "🌳";
+      $("#treeTitle").textContent = "Pohon Bertumbuh";
+      $("#treeDescription").textContent = "Teruskan proses belajar dan terapkan kebiasaan baik.";
+    } else {
+      $("#treeVisual").textContent = "🌳✨";
+      $("#treeTitle").textContent = "Seluruh Stasiun Dijelajahi";
+      $("#treeDescription").textContent = "Kamu telah menyelesaikan enam stasiun. Lanjutkan refleksi dan praktik baik dalam keseharian.";
+    }
+  }
+
+  // Stasiun 2: situasi dan respons
+  function renderSituation() {
+    const item = situations[situationIndex];
+    const area = $("#detectorArea");
+    area.innerHTML = "";
+
+    const heading = document.createElement("h3");
+    heading.textContent = item.title;
+    area.appendChild(heading);
+
+    const prompt = document.createElement("p");
+    prompt.textContent = item.prompt;
+    area.appendChild(prompt);
+
+    item.choices.forEach((choice, i) => {
+      const button = document.createElement("button");
+      button.className = "choice";
+      button.textContent = choice;
+      if (situationAnswers[situationIndex] === i) button.classList.add("selected");
+      button.addEventListener("click", () => {
+        situationAnswers[situationIndex] = i;
+        $$(".choice", area).forEach(el => el.classList.remove("selected"));
+        button.classList.add("selected");
+        const feedback = $("#detectorFeedback");
+        feedback.classList.remove("hidden");
+        feedback.textContent = (i === item.correct ? "Pilihan yang baik. " : "Mari pikirkan kembali. ")
+          + item.feedback;
+      });
+      area.appendChild(button);
+    });
+
+    $("#prevSituation").disabled = situationIndex === 0;
+    $("#nextSituation").textContent = situationIndex === situations.length - 1
+      ? "Kembali ke situasi pertama ↻" : "Situasi berikutnya →";
+    $("#detectorFeedback").classList.toggle("hidden", situationAnswers[situationIndex] === undefined);
+    if (situationAnswers[situationIndex] !== undefined) {
+      const selected = situationAnswers[situationIndex];
+      $("#detectorFeedback").textContent =
+        (selected === item.correct ? "Pilihan yang baik. " : "Mari pikirkan kembali. ") + item.feedback;
+    }
+  }
+
+  $("#prevSituation").addEventListener("click", () => {
+    if (situationIndex > 0) situationIndex--;
+    renderSituation();
+  });
+  $("#nextSituation").addEventListener("click", () => {
+    situationIndex = (situationIndex + 1) % situations.length;
+    renderSituation();
+  });
+  renderSituation();
+
+  // Stasiun 3: refleksi kebiasaan
+  const sliders = [
+    ["sAdvice", "vAdvice"],
+    ["sPause", "vPause"],
+    ["sCare", "vCare"],
+    ["sReflect", "vReflect"]
+  ];
+
+  sliders.forEach(([sliderId, valueId]) => {
+    $("#" + sliderId).addEventListener("input", event => {
+      $("#" + valueId).textContent = event.target.value + "/5";
+    });
+  });
+
+  $("#reviewHabits").addEventListener("click", () => {
+    const labels = [
+      ["sAdvice", "mendengarkan nasihat"],
+      ["sPause", "berhenti sejenak sebelum merespons"],
+      ["sCare", "memperhatikan perasaan orang lain"],
+      ["sReflect", "meluangkan waktu untuk ibadah dan refleksi"]
+    ];
+    const lowest = labels
+      .map(([id, label]) => ({ label, value: Number($("#" + id).value) }))
+      .sort((a, b) => a.value - b.value)[0];
+
+    const feedback = $("#habitFeedback");
+    feedback.classList.remove("hidden");
+    feedback.textContent = "Satu kebiasaan yang bisa kamu latih berikutnya adalah "
+      + lowest.label + ". Cobalah satu langkah kecil yang realistis. Angka ini bukan penilaian iman, hanya alat bantu memilih fokus latihan.";
+  });
+
+  // Stasiun 4: skenario
+  const scenarioMessages = [
+    "Ikut mengejek dapat memperbesar luka dan membuat perundungan berlanjut. Pilih respons yang menjaga martabat teman.",
+    "Pilihan ini membantu menjaga martabat teman. Jika ejekan berlanjut atau ada ancaman, mintalah bantuan guru atau orang dewasa tepercaya.",
+    "Membalas dengan hinaan dapat memperburuk keadaan. Coba hentikan eskalasi dan cari cara yang aman serta sopan.",
+    "Meminta bantuan adalah langkah yang bertanggung jawab bila situasi berlanjut. Hindari menyebarkan ulang konten yang mempermalukan teman."
+  ];
+
+  $$("#scenarioChoices .choice").forEach(button => {
+    button.addEventListener("click", () => {
+      scenarioChoice = Number(button.dataset.scenario);
+      $$("#scenarioChoices .choice").forEach(el => el.classList.remove("selected"));
+      button.classList.add("selected");
+      $("#scenarioFeedback").classList.remove("hidden");
+      $("#scenarioFeedback").textContent = scenarioMessages[scenarioChoice];
+    });
+  });
+
+  // Stasiun 5: daftar kebiasaan
+  function updateMissions() {
+    const count = $$("#missionList input:checked").length;
+    $("#missionCount").textContent = count + " kebiasaan dipilih";
+  }
+  $$("#missionList input").forEach(input => input.addEventListener("change", updateMissions));
+
+  // Stasiun 6: kuis
+  function renderQuiz() {
+    const area = $("#quizArea");
+    area.innerHTML = "";
+    quiz.forEach((item, qi) => {
+      const section = document.createElement("div");
+      section.className = "card";
+
+      const heading = document.createElement("h3");
+      heading.textContent = item.q;
+      section.appendChild(heading);
+
+      item.choices.forEach((choice, ci) => {
+        const label = document.createElement("label");
+        label.className = "mission";
+        const input = document.createElement("input");
+        input.type = "radio";
+        input.name = "quiz" + qi;
+        input.value = ci;
+        input.checked = quizAnswers[qi] === ci;
+        input.disabled = quizSubmitted;
+        input.addEventListener("change", () => { quizAnswers[qi] = ci; });
+
+        const text = document.createElement("span");
+        text.textContent = choice;
+        label.appendChild(input);
+        label.appendChild(text);
+        section.appendChild(label);
+      });
+      area.appendChild(section);
+    });
+  }
+  renderQuiz();
+
+  $("#submitQuiz").addEventListener("click", () => {
+    if (quizSubmitted) {
+      alert("Kuis sudah diperiksa. Gunakan tombol Mulai Ulang jika ingin mengulang kegiatan.");
+      return;
+    }
+    if (quiz.some((item, index) => quizAnswers[index] === undefined)) {
+      alert("Jawab semua pertanyaan terlebih dahulu.");
+      return;
+    }
+
+    quizScore = quiz.reduce((sum, item, index) =>
+      sum + (quizAnswers[index] === item.correct ? 1 : 0), 0);
+    quizSubmitted = true;
+
+    const result = $("#quizResult");
+    result.classList.remove("hidden");
+    result.innerHTML = "";
+
+    const heading = document.createElement("h3");
+    heading.textContent = "Hasil pemahaman: " + quizScore + " dari " + quiz.length;
+    result.appendChild(heading);
+
+    quiz.forEach((item, index) => {
+      const p = document.createElement("p");
+      p.textContent = item.q + " " +
+        (quizAnswers[index] === item.correct ? "Benar. " : "Belum tepat. ") +
+        item.explain;
+      result.appendChild(p);
+    });
+
+    $("#submitQuiz").disabled = true;
+    $("#submitQuiz").textContent = "Kuis Selesai ✓";
+    completed.add(5);
+    updateProgress();
+    $$(".mark-done[data-done='5']").forEach(button => {
+      button.disabled = true;
+      button.textContent = "Stasiun Evaluasi Selesai ✓";
+    });
+    renderQuiz();
+  });
+
+  // Refleksi: localStorage hanya jika tersedia
+  function storageKey() {
+    return "labHatiReflection_" + student.name + "_" + student.className;
+  }
+
+  function loadReflection() {
+    try {
+      const saved = localStorage.getItem(storageKey());
+      if (saved !== null) {
+        $("#reflection").value = saved;
+        $("#saveMessage").textContent = "Refleksi tersimpan ditemukan pada perangkat ini.";
+      } else {
+        $("#saveMessage").textContent = "";
+      }
+    } catch (error) {
+      $("#saveMessage").textContent = "Penyimpanan lokal tidak tersedia di browser ini. Kamu masih bisa mengunduh ringkasan.";
+    }
+  }
+
+  $("#saveReflection").addEventListener("click", () => {
+    try {
+      localStorage.setItem(storageKey(), $("#reflection").value);
+      $("#saveMessage").textContent = "Refleksi disimpan di browser pada perangkat ini.";
+    } catch (error) {
+      $("#saveMessage").textContent = "Refleksi tidak dapat disimpan di browser ini. Gunakan tombol Unduh Ringkasan.";
+    }
+  });
+
+  function reportText() {
+    const checkedMissions = $$("#missionList input:checked").map(input => input.value);
+    const situationLines = situations.map((item, index) => {
+      const selected = situationAnswers[index];
+      return item.title + ": " +
+        (selected === undefined ? "Belum dijawab" : item.choices[selected]);
+    });
+    const quizLine = quizScore === null
+      ? "Kuis: belum diperiksa"
+      : "Kuis: " + quizScore + " dari " + quiz.length;
+
+    return [
+      "LAB HATI — RINGKASAN PEMBELAJARAN PAI",
+      "======================================",
+      "Nama: " + student.name,
+      "Kelas: " + student.className,
+      "Progres: " + completed.size + " dari 6 stasiun",
+      quizLine,
+      "",
+      "RESPONS SITUASI",
+      ...situationLines,
+      "",
+      "KEBIASAAN YANG DIPILIH",
+      ...(checkedMissions.length ? checkedMissions.map(x => "- " + x) : ["Belum memilih kebiasaan."]),
+      "",
+      "REFLEKSI PRIBADI",
+      $("#reflection").value.trim() || "(Belum diisi)",
+      "",
+      "Catatan: Progres dan hasil kuis adalah indikator kegiatan belajar, bukan ukuran iman atau keadaan hati.",
+      "Dalil yang dipelajari: Q.S. Al-Baqarah [2]: 10 dan 74; Al-Anfal [8]: 2; At-Taubah [9]: 126; Ali 'Imran [3]: 151."
+    ].join("\n");
+  }
+
+  $("#downloadReport").addEventListener("click", () => {
+    const blob = new Blob([reportText()], { type: "text/plain;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "Ringkasan-LAB-HATI.txt";
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+  });
+
+  $("#printReport").addEventListener("click", () => window.print());
+
+  $("#backToIdentity").addEventListener("click", () => {
+    $("#appScreen").classList.add("hidden");
+    $("#startScreen").classList.remove("hidden");
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  });
+
+  $("#resetApp").addEventListener("click", () => {
+    const sure = confirm("Mulai ulang akan menghapus progres pada sesi ini dan mengosongkan jawaban. Lanjutkan?");
+    if (!sure) return;
+    completed.clear();
+    currentStation = 0;
+    situationIndex = 0;
+    situationAnswers = {};
+    quizAnswers = {};
+    quizScore = null;
+    quizSubmitted = false;
+    scenarioChoice = null;
+
+    $$("#missionList input").forEach(input => input.checked = false);
+    updateMissions();
+    $("#reflection").value = "";
+    $("#habitFeedback").classList.add("hidden");
+    $("#scenarioFeedback").classList.add("hidden");
+    $("#quizResult").classList.add("hidden");
+    $("#submitQuiz").disabled = false;
+    $("#submitQuiz").textContent = "Periksa Jawaban";
+    $$(".mark-done").forEach(button => {
+      button.disabled = false;
+      button.textContent = button.dataset.done === "0" ? "Tandai Stasiun Pahami Selesai ✓"
+        : button.dataset.done === "1" ? "Tandai Stasiun Amati Selesai ✓"
+        : button.dataset.done === "2" ? "Tandai Stasiun Selidiki Selesai ✓"
+        : button.dataset.done === "3" ? "Tandai Stasiun Praktikkan Selesai ✓"
+        : button.dataset.done === "4" ? "Tandai Stasiun Rawat Selesai ✓"
+        : "Tandai Stasiun Evaluasi Selesai ✓";
+    });
+    sliders.forEach(([sliderId, valueId]) => {
+      $("#" + sliderId).value = 3;
+      $("#" + valueId).textContent = "3/5";
+    });
+    $$("#scenarioChoices .choice").forEach(el => el.classList.remove("selected"));
+    renderSituation();
+    renderQuiz();
+    updateProgress();
+    showStation(0);
+  });
+
+})();
+</script>
+</body>
+</html>
